@@ -1,0 +1,246 @@
+<html>
+<head>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vuex"></script>
+  <script src="trigger/trigger.js"></script>
+  <style type="text/css">
+    button.trigger {
+      background-color: #7d7;
+      border: none;
+      border-radius: 10px;
+      width: 40px;
+      height: 40px;
+      margin: 10px;
+      color: white;
+      font-size: 24;
+    }
+    button.trigger.active {
+      background-color: #d22;
+    }
+    button.add {
+      background-color: #d55;
+      border: none;
+      border-radius: 100px;
+      width: 120px;
+      height: 45px;
+      margin: 10px;
+      color: white;
+      font-size: 20;      
+    }
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+    button:focus {outline:0;}
+  </style>
+</head>
+<body>
+<div id="vueTemplates" style="display: none;">
+  <div id='summatorTemplate'>
+    <div>
+      <button 
+        class="add centered"
+        v-bind:style='env.infoButton.styleObject'
+        disabled
+        >{{ sumValue }}</button>      
+      <trigger 
+        v-for="item in triggers"
+        :key="item.id"
+        :trigger="item"
+        class="trigger"
+        ></trigger>
+      <button 
+        class="add centered" 
+        v-bind:style='env.sumButton.styleObject'
+        v-on:click="startStopSum"
+        >{{ env.sumButton.title }}</button>
+      <button 
+        class="add centered" 
+        v-bind:style='env.moreRightButton.styleObject'
+        v-on:click="makeTriggerRight"
+        >{{ env.moreRightButton.title }}</button>        
+      <button 
+        class="add centered" 
+        v-bind:style='env.resetButton.styleObject'
+        v-on:click="reset"
+        >{{ env.resetButton.title }}</button>
+      <button 
+        class="add centered" 
+        v-bind:style="env.moreLeftButton.styleObject"
+        v-on:click="makeTriggerLeft"
+        >{{ env.moreLeftButton.title }}</button>        
+    </div>
+  </div>
+  <div id="triggerTemplate">
+    <button v-bind:class='{active: active}'></button>
+  </div>
+</div>
+
+<div 
+  id="work_area" 
+  class='centered'
+  >
+  <summator ref='sum1' v-bind:env="env"></summator>
+</div>
+
+<script>
+
+Vue.config.debug = true;
+Vue.config.devtools = true;
+Vue.config.productionTip = false;
+
+Vue.component("trigger", {
+  template: triggerTemplate.innerHTML,
+  props: ["trigger"],
+  data: function() {
+    const data = {};
+    Trigger.init(data, this.trigger.getDomain());
+    data.active = false;
+    return data;
+  },
+  mounted: function() {
+    this.trigger.getDomain = this.getDomain;
+    this.trigger.getState = this.getState;
+    this.trigger.next = this.next;
+    this.trigger.reset = this.reset;
+  }
+});
+
+
+const triggers = [Trigger.create(), Trigger.create(), Trigger.create()];
+triggers.forEach((el) => el.id = Math.random());
+const summator = Summator.create(triggers);
+
+Vue.component("summator", {
+  props: ['env'],
+  template: summatorTemplate.innerHTML,
+  data: function() {
+    const data = {};
+    Summator.init(data, this.env.triggers);
+    data.triggers = data.getTriggers();
+    return data;
+  },
+  watch: {
+    triggers: function() {
+      this.updateState();
+    }
+  },
+  computed: {
+    sumValue: function() {
+      if (this.state.length <= 0) return 0;
+      return parseInt(this.state.join(""), 2);
+    }
+  },
+  created: function() {
+    this.autoSumTimer = null;
+    this.currentAutoSumAction = null;
+  },
+  methods: {
+    createTriggerWithKey: function() {
+      const newTrigger = Trigger.create();
+      newTrigger.id = Math.random();
+      return newTrigger;
+    },
+    makeTriggerLeft: function() {
+      this.triggers.unshift(this.createTriggerWithKey());
+    },
+    makeTriggerRight: function() {
+      this.triggers.push(this.createTriggerWithKey());
+    },
+    startAutoSum: function() {
+      this.autoSumTimer = setInterval(() => this.add(), 500);
+      this.env.sumButton.setStop();
+    },
+    stopAutoSum: function() {      
+      this.env.sumButton.setStart();
+    },    
+    startStopSum: function() {
+      clearInterval(this.autoSumTimer);
+      if (this.state.length <= 0) {
+        this.env.sumButton.showError();
+        return;
+      }
+      if (this.currentAutoSumAction !== this.startAutoSum) {
+        this.currentAutoSumAction = this.startAutoSum;
+      } else {
+        this.currentAutoSumAction = this.stopAutoSum;
+      }
+      this.currentAutoSumAction();
+    },    
+  }
+});
+
+const vue = new Vue({
+  el: '#work_area',
+  data: {
+    env: {
+      triggers: triggers,
+      resetButton: {
+        title: "RESET",
+        styleObject: {
+          "margin-top": "100px",
+          "margin-left": "-150px",
+        }
+      },
+      sumButton: {
+        styleObject: {
+          "margin-top": "100px",
+          "background-color": "#4F4"
+        },
+        title: "AUTOSUM",
+        setStop: function () {
+          this.styleObject['background-color'] = "#dd0";
+          this.title = "STOP";
+        },
+        setStart: function() {
+          this.styleObject['background-color'] = "#4F4";
+          this.title = "RESUME";
+        },
+        showError: function() {
+          const oldWidth = this.styleObject['width'];
+          const oldColor = this.styleObject['background-color'];
+          const oldTitle = this.title;
+          this.styleObject['width'] = "180px";
+          this.styleObject['background-color'] = "#f33";
+          this.title = "NO TRIGGERS";
+          setTimeout(() => {
+            this.styleObject['width'] = oldWidth;
+            this.styleObject['background-color'] = oldColor;
+            this.title = oldTitle;
+          }, 1200);
+        }
+      },
+      moreRightButton: {
+        title: "ONE MORE RIGHT",
+        styleObject: {
+          "margin-top": "100px",
+          "margin-left": "300px",
+          "width": "350px"
+        }
+      },
+      moreLeftButton: {
+        title: "ONE MORE LEFT",
+        styleObject: {
+          "margin-top": "100px",
+          "margin-left": "-400px",
+          "width": "300px"
+        }
+      },
+      infoButton: {
+        styleObject: {
+          "background-color": "#88d",
+          "margin-top": "-100px",
+          "width": "200px",
+        }
+      }
+    }
+  }
+});
+
+
+</script>
+
+</body>
+</html>
