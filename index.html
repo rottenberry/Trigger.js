@@ -179,7 +179,7 @@ const vue = new Vue({
     env: {
       triggers: triggers,
       resetButton: {
-        title: "Сбросить",
+        title: "RESET",
         styleObject: {
           "margin-top": "100px",
           "margin-left": "-150px",
@@ -190,14 +190,14 @@ const vue = new Vue({
           "margin-top": "100px",
           "background-color": "#4F4"
         },
-        title: "Автосумма",
+        title: "AUTOSUM",
         setStop: function () {
           this.styleObject['background-color'] = "#dd0";
-          this.title = "Остановить";
+          this.title = "STOP";
         },
         setStart: function() {
           this.styleObject['background-color'] = "#4F4";
-          this.title = "Продолжить";
+          this.title = "RESUME";
         },
         showError: function() {
           const oldWidth = this.styleObject['width'];
@@ -205,7 +205,7 @@ const vue = new Vue({
           const oldTitle = this.title;
           this.styleObject['width'] = "180px";
           this.styleObject['background-color'] = "#f33";
-          this.title = "Нет триггеров!";
+          this.title = "NO TRIGGERS";
           setTimeout(() => {
             this.styleObject['width'] = oldWidth;
             this.styleObject['background-color'] = oldColor;
@@ -214,7 +214,7 @@ const vue = new Vue({
         }
       },
       moreRightButton: {
-        title: "Добавить триггер справа",
+        title: "ONE MORE RIGHT",
         styleObject: {
           "margin-top": "100px",
           "margin-left": "300px",
@@ -222,7 +222,7 @@ const vue = new Vue({
         }
       },
       moreLeftButton: {
-        title: "Добавить триггер слева",
+        title: "ONE MORE LEFT",
         styleObject: {
           "margin-top": "100px",
           "margin-left": "-400px",
