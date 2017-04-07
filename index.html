@@ -96,17 +96,8 @@ Vue.component("trigger", {
   template: triggerTemplate.innerHTML,
   props: ["trigger"],
   data: function() {
-    const data = {};
-    Trigger.init(data, this.trigger.getDomain());
-    data.active = false;
-    return data;
+    return this.trigger;
   },
-  mounted: function() {
-    this.trigger.getDomain = this.getDomain;
-    this.trigger.getState = this.getState;
-    this.trigger.next = this.next;
-    this.trigger.reset = this.reset;
-  }
 });
 
 
@@ -118,10 +109,9 @@ Vue.component("summator", {
   props: ['env'],
   template: summatorTemplate.innerHTML,
   data: function() {
-    const data = {};
-    Summator.init(data, this.env.triggers);
-    data.triggers = data.getTriggers();
-    return data;
+    const summator = Summator.create(this.env.triggers);
+    summator.triggers = summator.getTriggers();
+    return summator;
   },
   watch: {
     triggers: function() {
