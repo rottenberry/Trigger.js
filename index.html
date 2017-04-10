@@ -5,6 +5,21 @@
   <script src="https://unpkg.com/vuex"></script>
   <script src="trigger/trigger.js"></script>
   <style type="text/css">
+    p {
+      background-color: #fff7bc;
+      border-radius: 2px;
+      margin: 3px;
+      width: auto;
+      clear: both;
+      float: left;
+      font-size: 22;
+    }
+    input {
+      border-radius: 10px;
+      border: 1px solid #cccccc;
+      margin: 2px;
+      background-color: #ddb9ff;
+    }  
     button.trigger {
       background-color: #7d7;
       border: none;
@@ -33,6 +48,10 @@
       top: 50%;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
+    }
+    .centered.permutator {
+      margin-top: -200px;
+      margin-left: -500px;
     }
     button:focus {outline:0;}
   </style>
@@ -84,6 +103,25 @@
   class='centered'
   >
   <summator ref='sum1' v-bind:env="env"></summator>
+</div>
+
+<div style="clear: both;"></div>
+<div id="permutator" class='centered permutator'>
+  <h1>Fill the fields with words</h1>
+  <button class='add' @click="addFind">
+  +1 field
+  </button>
+  <button class='add' @click="permutateClear">
+    {{buttonLable}}
+  </button>
+  <div v-for="find in inputs">
+    <input v-model="find.value">
+  </div>
+  <br>
+  <div v-show='showResult'>
+    <h3>Permutations</h3>
+    <p>{{ text }}</p> 
+  </div>
 </div>
 
 <script>
@@ -230,6 +268,58 @@ const vue = new Vue({
   }
 });
 
+
+const permutator = new Vue({
+  el: '#permutator',
+  data: {
+    inputs: [],
+    permutations: [],
+    buttonLable: 'Generate',
+  },
+  methods: {
+    addFind: function () {
+      this.inputs.push({ value: '01' });
+    },
+    getValues: function() {
+      return this.inputs.map((el) => el.value).filter((el) => el.length > 0);
+    },
+    permutate: function() {
+      const triggers = this.getValues().map((el) => Trigger.create(el) );
+      const permutator = Permutator.create(triggers);
+      permutator.promote();
+      this.setPermutations(permutator.permutations.slice());
+    },
+    clearPermutations: function() {
+      this.permutations = [];
+    },
+    setPermutations: function(newPermutations) {
+      this.clearPermutations();
+      this.permutations = newPermutations;
+    },
+    permutateClear: function() {
+      if (this.currentAction !== this.permutate) {
+        this.currentAction = this.permutate;
+        this.buttonLable = 'Clear';
+      } else {
+        this.currentAction = this.clearPermutations;
+        this.buttonLable = 'Generate';
+      }
+      this.currentAction();
+    }
+  },
+  computed: {
+    showResult: function() {
+      return this.permutations.length > 0;
+    },
+    text: function() {
+      return this.permutations.map((el) => el.join('')).join('  ');
+    }
+  },
+  mounted: function() {
+    this.inputs.push({value: '01'});
+    this.currentAction = null;
+  },
+});
 
 </script>
 
