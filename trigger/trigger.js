@@ -149,7 +149,12 @@ Summator.init = function initSummator(summator, triggers) {
   * the summator calls the callback
   * @return array states
   */
-  summator.add = (callback) => {
+  summator.add = (callbacks) => {
+    const {onFired, preFired} = typeof callbacks === "object" ? callbacks : {};
+    if (typeof preFired === "function" && summator.state.every((el) => !!el)) {
+      preFired();
+      //only for binary triggers!
+    }
     let trigger = triggers.length;
     let hasCanceledAdding = false;
     while (trigger--) {
@@ -159,12 +164,60 @@ Summator.init = function initSummator(summator, triggers) {
         break;
       }
     }
-    if (!hasCanceledAdding && typeof callback === "function") {
-      callback();
+    if (!hasCanceledAdding && typeof onFired === "function") {
+      onFired();
     }
     summator.updateState();
     return summator.getState();
   };
 
   summator.updateState();
+};
+
+
+/**
+*Creates a permutator based on Summator
+*/
+const Permutator = Object.create(null);
+
+Permutator.create = function createPermutator(triggers) {
+  let self = Object.create(this);
+  Summator.init(self, triggers);
+  this.init(self);
+  return self;
+};
+
+/**
+* Initiates a permutator with triggers
+*/
+Permutator.init = function(self) {
+  /**
+  * A bunch of summator's states
+  */
+  self.permutations = [];
+  /**
+  * By default a permuatator has one initial state
+  */
+  self.permutations.push(self.getState());
+
+
+  /**
+  * Promotes a summator from the initial state to the initial state again
+  */
+  self.promote = function() {
+    let reachedEnd = false;
+    const stopLoop = function() {
+      reachedEnd = true;
+    };
+    const callbacks = {
+      onFired: stopLoop
+    };
+    let foo = 1000;
+    while (!reachedEnd && foo--) {
+      self.add(callbacks);
+      self.permutations.push(self.getState());
+    }
+    self.permutations.pop();
+    //because  summator.add() in the end returns initial state, that need to be deleted
+  };
 };
