@@ -36,11 +36,14 @@ Trigger.create = function createTrigger(domain) {
 * @param array domain ([0, 1]) by default
 * 
 */
-Trigger.init = function initTrigger(trigger, domain = getDomain()) {  
+Trigger.init = function initTrigger(trigger, domain = getDomain()) {
+  if (domain.length <= 0) {
+    throw new Error('The domain has no values');
+  }
   /**
   * Shows if the trigger is turn on now
   */
-  trigger.active = false;
+  trigger.active = domain.length === 1? true: false;
   /**
   * Shows the position the trigger is on now
   */
@@ -69,6 +72,12 @@ Trigger.init = function initTrigger(trigger, domain = getDomain()) {
   * @return object state
   */
   trigger.next = () => {
+    if (domain.length === 1) {
+      return {
+        value: domain[0],
+        fired: true,
+      };
+    }
     let fired = false;
     if (!hasBeenPromoted) {
       pointer = 0;
