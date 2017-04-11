@@ -221,8 +221,7 @@ Permutator.init = function(self) {
     const callbacks = {
       onFired: stopLoop
     };
-    let foo = 1000;
-    while (!reachedEnd && foo--) {
+    while (!reachedEnd) {
       self.add(callbacks);
       self.permutations.push(self.getState());
     }
