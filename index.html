@@ -1,130 +1,125 @@
 <html>
 <head>
-  <meta charset="utf-8">
+  <meta charset='utf-8'>
   <script src="https://unpkg.com/vue"></script>
-  <script src="https://unpkg.com/vuex"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css" />
   <script src="trigger/trigger.js"></script>
-  <style type="text/css">
-    p {
-      background-color: #fff7bc;
-      border-radius: 2px;
-      margin: 3px;
-      width: auto;
-      clear: both;
-      float: left;
-      font-size: 22;
+
+  <style>
+    .columns.page .box {
+      border-radius:  5px;
+      margin: 4px;
+      padding: 2px;
     }
-    input {
-      border-radius: 10px;
-      border: 1px solid #cccccc;
-      margin: 2px;
-      background-color: #ddb9ff;
-    }  
-    button.trigger {
-      background-color: #7d7;
+    body {
+      padding-top: 10px;
+    }
+    .trigger {
+      border-radius: 50px;
+      border: 1px solid #dbdbdb;
+      height: 2.5em;
+      width: 2.5em;
+      background-color: #4caf50;
+    }
+    .trigger.active {
+      background-color: #f44336;
+    }
+    p.sumvalue {
+      margin-bottom: 40px;
+      margin-top: 50px;
+    }
+    p.sumvalue span {
+      background-color: #68ef68;
       border: none;
-      border-radius: 10px;
-      width: 40px;
-      height: 40px;
-      margin: 10px;
-      color: white;
-      font-size: 24;
+      border-radius: 50px;
+      font-size: 1.5em;
+      line-height: 5px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 1px;
+      padding-bottom: 3px;
     }
-    button.trigger.active {
-      background-color: #d22;
+    .summator-control {
+      margin-bottom: 5px;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+      font-size: 2em;
+      max-height: 40px;
     }
-    button.add {
-      background-color: #d55;
-      border: none;
-      border-radius: 100px;
-      width: 120px;
-      height: 45px;
-      margin: 10px;
-      color: white;
-      font-size: 20;      
+    .tile.is-vertical.add>.tile.is-child:not(:last-child) {
+      margin-bottom: 0px !important;
     }
-    .centered {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-50%);
+    .control-panel {
+      margin-top: 40px !important;
     }
-    .centered.permutator {
-      margin-top: -250px;
-    }
-    button:focus {outline:0;}
   </style>
 </head>
-<body>
+<body class='container'>
+
 <div id="vueTemplates" style="display: none;">
   <div id='summatorTemplate'>
-    <div>
-      <button 
-        class="add centered"
-        v-bind:style='env.infoButton.styleObject'
-        disabled
-        >{{ sumValue }}</button>      
+    <div class='box'>
+      <h2 class='title is-5'>Summator</h2>
+      <p class='sumvalue'><span>{{sumValue}}</span></p>
       <trigger 
         v-for="item in triggers"
         :key="item.id"
         :trigger="item"
         class="trigger"
         ></trigger>
-      <button 
-        class="add centered" 
-        v-bind:style='env.sumButton.styleObject'
-        v-on:click="startStopSum"
-        >{{ env.sumButton.title }}</button>
-      <button 
-        class="add centered" 
-        v-bind:style='env.moreRightButton.styleObject'
-        v-on:click="makeTriggerRight"
-        >{{ env.moreRightButton.title }}</button>        
-      <button 
-        class="add centered" 
-        v-bind:style='env.resetButton.styleObject'
-        v-on:click="reset"
-        >{{ env.resetButton.title }}</button>
-      <button 
-        class="add centered" 
-        v-bind:style="env.moreLeftButton.styleObject"
-        v-on:click="makeTriggerLeft"
-        >{{ env.moreLeftButton.title }}</button>        
+      <hr />
+      <div class="tile is-ancestor control-panel">
+        <div class='tile is-parent'>
+          <div class="tile is-child">
+            <button 
+              v-on:click="startStopSum"
+              v-bind:class='env.sumButton.classObject'
+              >{{env.sumButton.title}}</button>
+          </div>
+          <div class="tile is-child">
+            <button 
+              class='summator-control button is-danger'
+              v-on:click="reset"
+              >reset</button>
+          </div>
+        </div>
+        <div class='tile is-parent is-vertical add'>
+          <div class="tile is-child">
+            <button 
+              class='summator-control button is-primary'
+              v-on:click="makeTriggerLeft"
+              >add left</button>
+          </div>            
+          <div class="tile is-child">
+            <button 
+              class='summator-control button is-primary'
+              v-on:click="makeTriggerRight"
+              >add right</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div id="triggerTemplate">
-    <button v-bind:class='{active: active}'></button>
+    <button v-bind:class='{active: active}' disabled></button>
   </div>
 </div>
 
-<div 
-  id="work_area" 
-  class='centered'
-  >
-  <summator ref='sum1' v-bind:env="env"></summator>
-</div>
 
-<div style="clear: both;"></div>
-<div id="permutator" class='centered permutator'>
-  <h1>Fill the fields with words</h1>
-  <button class='add' @click="addFind">
-  +1 field
-  </button>
-  <button class='add' @click="permutateClear">
-    {{buttonLable}}
-  </button>
-  <div v-for="find in inputs">
-    <input v-model="find.value">
+
+  <div class="columns page">
+    <div class="column has-text-centered">
+      <div 
+        id="work_area" 
+        class='centered'
+        >
+        <summator ref='sum1' v-bind:env="env"></summator>
+      </div>
   </div>
-  <br>
-  <div v-show='showResult'>
-    <h3>Permutations</h3>
-    <p>{{ text }}</p> 
-  </div>
-</div>
 
 <script>
-
 Vue.config.debug = true;
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
@@ -138,7 +133,12 @@ Vue.component("trigger", {
 });
 
 
-const triggers = [Trigger.create(), Trigger.create(), Trigger.create()];
+const triggers = [
+  Trigger.create(),
+  Trigger.create(),
+  Trigger.create(),
+  Trigger.create()
+];
 triggers.forEach((el) => el.id = Math.random());
 const summator = Summator.create(triggers);
 
@@ -205,122 +205,41 @@ const vue = new Vue({
   data: {
     env: {
       triggers: triggers,
-      resetButton: {
-        title: "RESET",
-        styleObject: {
-          "margin-top": "100px",
-          "margin-left": "-150px",
-        }
-      },
       sumButton: {
-        styleObject: {
-          "margin-top": "100px",
-          "background-color": "#4F4"
+        classObject: {
+          "is-warning": false,
+          "is-success": true,
+          "is-danger": false,
+          "summator-control": true,
+          "button": true,
         },
-        title: "AUTOSUM",
+        title: "start",
         setStop: function () {
-          this.styleObject['background-color'] = "#dd0";
-          this.title = "STOP";
+          this.setClass('is-warning');
+          this.title = "stop";
         },
         setStart: function() {
-          this.styleObject['background-color'] = "#4F4";
-          this.title = "RESUME";
+          this.setClass('is-success');
+          this.title = "resume";
         },
         showError: function() {
-          const oldWidth = this.styleObject['width'];
-          const oldColor = this.styleObject['background-color'];
-          const oldTitle = this.title;
-          this.styleObject['width'] = "180px";
-          this.styleObject['background-color'] = "#f33";
+          this.classObject('is-danger');
           this.title = "NO TRIGGERS";
           setTimeout(() => {
-            this.styleObject['width'] = oldWidth;
-            this.styleObject['background-color'] = oldColor;
+            this.setClass('is-success');            
             this.title = oldTitle;
           }, 1200);
-        }
+        },
+        setClass: function(className) {
+          this.classObject['is-danger'] = false;
+          this.classObject['is-success'] = false;
+          this.classObject['is-warning'] = false;
+          this.classObject[className] = true;
+        },
       },
-      moreRightButton: {
-        title: "ONE MORE RIGHT",
-        styleObject: {
-          "margin-top": "100px",
-          "margin-left": "300px",
-          "width": "350px"
-        }
-      },
-      moreLeftButton: {
-        title: "ONE MORE LEFT",
-        styleObject: {
-          "margin-top": "100px",
-          "margin-left": "-400px",
-          "width": "300px"
-        }
-      },
-      infoButton: {
-        styleObject: {
-          "background-color": "#88d",
-          "margin-top": "-100px",
-          "width": "200px",
-        }
-      }
     }
   }
 });
-
-
-const permutator = new Vue({
-  el: '#permutator',
-  data: {
-    inputs: [],
-    permutations: [],
-    buttonLable: 'Generate',
-  },
-  methods: {
-    addFind: function () {
-      this.inputs.push({ value: '01' });
-    },
-    getValues: function() {
-      return this.inputs.map((el) => el.value).filter((el) => el.length > 0);
-    },
-    permutate: function() {
-      const triggers = this.getValues().map((el) => Trigger.create(el) );
-      const permutator = Permutator.create(triggers);
-      permutator.promote();
-      this.setPermutations(permutator.permutations.slice());
-    },
-    clearPermutations: function() {
-      this.permutations = [];
-    },
-    setPermutations: function(newPermutations) {
-      this.clearPermutations();
-      this.permutations = newPermutations;
-    },
-    permutateClear: function() {
-      if (this.currentAction !== this.permutate) {
-        this.currentAction = this.permutate;
-        this.buttonLable = 'Clear';
-      } else {
-        this.currentAction = this.clearPermutations;
-        this.buttonLable = 'Generate';
-      }
-      this.currentAction();
-    }
-  },
-  computed: {
-    showResult: function() {
-      return this.permutations.length > 0;
-    },
-    text: function() {
-      return this.permutations.map((el) => el.join('')).join('  ');
-    }
-  },
-  mounted: function() {
-    this.inputs.push({value: '01'});
-    this.currentAction = null;
-  },
-});
-
-</script>
-
+</script>  
 </body>
 </html>
