@@ -15,7 +15,6 @@
     Trigger.create()
   ];
   triggers.forEach((el) => el.id = Math.random());
-  const summator = Summator.create(triggers);
 
   Vue.component("summator", {
     props: ['env'],
@@ -76,7 +75,7 @@
   });
 
   const vue = new Vue({
-    el: '#work_area',
+    el: '#summator_component',
     data: {
       env: {
         triggers: triggers,
