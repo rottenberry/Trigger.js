@@ -7,64 +7,58 @@
   <link rel="stylesheet" type="text/css" href="styles/styles.css">
 </head>
 <body class='container'>
-
-<div id="vueTemplates" style="display: none;">
-  <div id='summatorTemplate'>
-    <div class='box'>
-      <h2 class='title is-5'>Summator</h2>
-      <p class='sumvalue'><span>{{sumValue}}</span></p>
-      <trigger 
-        v-for="item in triggers"
-        :key="item.id"
-        :trigger="item"
-        class="trigger"
-        ></trigger>
-      <hr />
-      <div class="tile is-ancestor control-panel">
-        <div class='tile is-parent'>
-          <div class="tile is-child">
-            <button 
-              v-on:click="startStopSum"
-              v-bind:class='env.sumButton.classObject'
-              >{{env.sumButton.title}}</button>
+  <div id="vueTemplates" style="display: none;">
+    <div id='summatorTemplate'>
+      <div class='box'>
+        <h2 class='title is-5'>Summator</h2>
+        <p class='sumvalue'><span>{{sumValue}}</span></p>
+        <trigger 
+          v-for="item in triggers"
+          :key="item.id"
+          :trigger="item"
+          class="trigger"
+          ></trigger>
+        <hr />
+        <div class="tile is-ancestor control-panel">
+          <div class='tile is-parent'>
+            <div class="tile is-child">
+              <button 
+                v-on:click="startStopSum"
+                v-bind:class='env.sumButton.classObject'
+                >{{env.sumButton.title}}</button>
+            </div>
+            <div class="tile is-child">
+              <button 
+                class='summator-control button is-danger'
+                v-on:click="reset"
+                >reset</button>
+            </div>
           </div>
-          <div class="tile is-child">
-            <button 
-              class='summator-control button is-danger'
-              v-on:click="reset"
-              >reset</button>
-          </div>
-        </div>
-        <div class='tile is-parent is-vertical add'>
-          <div class="tile is-child">
-            <button 
-              class='summator-control button is-primary'
-              v-on:click="makeTriggerLeft"
-              >add left</button>
-          </div>            
-          <div class="tile is-child">
-            <button 
-              class='summator-control button is-primary'
-              v-on:click="makeTriggerRight"
-              >add right</button>
+          <div class='tile is-parent is-vertical add'>
+            <div class="tile is-child">
+              <button 
+                class='summator-control button is-primary'
+                v-on:click="makeTriggerLeft"
+                >add left</button>
+            </div>            
+            <div class="tile is-child">
+              <button 
+                class='summator-control button is-primary'
+                v-on:click="makeTriggerRight"
+                >add right</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div id="triggerTemplate">
+      <button v-bind:class='{active: active}' disabled></button>
+    </div>
   </div>
-  <div id="triggerTemplate">
-    <button v-bind:class='{active: active}' disabled></button>
-  </div>
-</div>
-
-
-
   <div class="columns">
     <div class="column has-text-centered">
-      <div 
-        id="work_area" 
-        >
-        <summator ref='sum1' v-bind:env="env"></summator>
+      <div id="work_area" >
+        <summator v-bind:env="env"></summator>
       </div>
     </div>
     <div class='column has-text-centered'>
