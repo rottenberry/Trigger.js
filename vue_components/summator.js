@@ -132,16 +132,16 @@
             this.title = 'full';
           },
           setEnabledTitle: function() {
-            this.title = 'add left'
+            this.title = 'add left';
           }
         },
         addRightButton: {
           title: "add right",
           setDisabledTitle: function() {
-            this.title = 'full'
+            this.title = 'full';
           },
           setEnabledTitle: function() {
-            this.title = 'add right'
+            this.title = 'add right';
           }
         }
       }
