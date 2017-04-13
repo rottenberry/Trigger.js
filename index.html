@@ -39,13 +39,15 @@
               <button 
                 class='summator-control button is-primary'
                 v-on:click="makeTriggerLeft"
-                >add left</button>
+                v-bind:disabled="cantAddMore"
+                >{{env.addLeftButton.title}}</button>
             </div>            
             <div class="tile is-child">
               <button 
                 class='summator-control button is-primary'
                 v-on:click="makeTriggerRight"
-                >add right</button>
+                v-bind:disabled="cantAddMore"
+                >{{env.addRightButton.title}}</button>
             </div>
           </div>
         </div>
