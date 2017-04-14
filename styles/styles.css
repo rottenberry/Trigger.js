@@ -6,10 +6,12 @@ body {
 }
 .trigger {
   border-radius: 50px;
-  border: 1px solid #dbdbdb;
+  border: none;
   height: 2.5em;
   width: 2.5em;
   background-color: #4caf50;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 .trigger.active {
   background-color: #f44336;
