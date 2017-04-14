@@ -45,3 +45,9 @@ p.sumvalue span {
 .control-panel {
   margin-top: 40px !important;
 }
+.input.permut {
+  max-width: 300px;
+}
+p .input.permut {
+  margin-bottom: 5px !important;
+}
