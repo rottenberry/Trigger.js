@@ -64,14 +64,20 @@
       </div>
     </div>
     <div class='column has-text-centered'>
-      <div class='box' style='height: 100%;'>
+      <div class='box' style='height: 100%;' id='permutator'>
         <h2 class='title is-5'>Permutator</h2>
-        <button class='button is-primary'>add +1 field</button>
-        <button class='button is-success'>generate</button>
+        <button 
+          class='button is-primary' 
+          @click="addFind">add +1 field</button>
+        <button 
+          v-bind:class='button.classObject' 
+          @click="permutateClear"
+          >{{ button.title }}</button>
         <hr />
-        <p><input type='text' class='input permut'></p>
-        <p><input type='text' class='input permut'></p>
-        <textarea class='textarea'></textarea>
+        <p
+          v-for="input in inputs"
+          ><input type='text' class='input permut' v-model="input.value"></p>
+        <textarea class='textarea'>{{ text }}</textarea>
       </div>
     </div>
   </div>
@@ -84,5 +90,6 @@
   Vue.config.productionTip = false;
   </script>  
   <script src="vue_components/summator.js"></script>
+  <script src='vue_components/permutator.js'></script>
 </body>
 </html>
