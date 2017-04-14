@@ -1,28 +1,30 @@
 (function() {
 
-const permutator = new Vue({
-  el: '#permutator',
-  data: {
-    inputs: [],
-    permutations: [],
-    button: {
-      title: 'generate',
-      classObject: {
-        button: true,
-        "is-success": true,
-        'is-danger': false,
-      },
-      setGenerate: function() {
-        this.title = 'generate';
-        this.classObject['is-danger'] = false;
-        this.classObject['is-success'] = true;
-      },
-      setClear: function() {
-        this.title = 'clear';
-        this.classObject['is-success'] = false;
-        this.classObject['is-danger'] = true;
+Vue.component('permutator', {
+  template: permutatorTemplate.innerHTML,
+  data: function() {
+    return {
+      inputs: [],
+      permutations: [],
+      button: {
+        title: 'generate',
+        classObject: {
+          button: true,
+          "is-success": true,
+          'is-danger': false,
+        },
+        setGenerate: function() {
+          this.title = 'generate';
+          this.classObject['is-danger'] = false;
+          this.classObject['is-success'] = true;
+        },
+        setClear: function() {
+          this.title = 'clear';
+          this.classObject['is-success'] = false;
+          this.classObject['is-danger'] = true;
+        }        
       }
-    },
+    };
   },
   methods: {
     addFind: function () {
@@ -67,6 +69,10 @@ const permutator = new Vue({
     this.inputs.push({value: '01'});
     this.currentAction = null;
   },
+});
+
+const permutator = new Vue({
+  el: '#permutator',
 });
   
 })();
