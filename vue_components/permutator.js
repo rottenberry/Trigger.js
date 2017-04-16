@@ -25,7 +25,7 @@ Vue.component('permutator', {
     };
   },
   methods: {
-    addFind: function () {
+    addInput: function () {
       this.inputs.push({ value: '01' });
     },
     getValues: function() {
