@@ -18,7 +18,6 @@
 
   Vue.component("summator", {
     props: ['env'],
-    template: summatorTemplate.innerHTML,
     data: function() {
       const summator = Summator.create(this.env.triggers);
       summator.triggers = summator.getTriggers();
@@ -50,6 +49,7 @@
     created: function() {
       this.autoSumTimer = null;
       this.currentAutoSumAction = null;
+      this.$options.template = this.env.template;
     },
     methods: {
       createTriggerWithKey: function() {
@@ -93,6 +93,7 @@
         params: {
           MAX_SIZE: 16,
         },
+        template: summatorTemplate.innerHTML,
         triggers: triggers,
         sumButton: {
           classObject: {

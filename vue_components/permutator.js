@@ -1,7 +1,7 @@
 (function() {
 
 Vue.component('permutator', {
-  template: permutatorTemplate.innerHTML,
+  props: ['env'],
   data: function() {
     return {
       inputs: [],
@@ -65,6 +65,9 @@ Vue.component('permutator', {
       return this.permutations.map((el) => el.join('')).join('  ');
     }
   },
+  created: function() {
+    this.$options.template = this.env.template;
+  },
   mounted: function() {
     this.inputs.push({value: '01'});
     this.currentAction = null;
@@ -73,6 +76,11 @@ Vue.component('permutator', {
 
 const permutator = new Vue({
   el: '#permutator',
+  data: {
+    env: {
+      template: permutatorTemplate.innerHTML,
+    }
+  }
 });
   
 })();
