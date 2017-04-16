@@ -23,7 +23,8 @@
       <div>
         <h2 class='title is-5'>Permutator</h2>
         <button 
-          class='button is-primary' 
+          class='button is-primary'
+          v-bind:disabled="cantAddMore"
           @click="addInput">add +1 field</button>
         <button 
           v-bind:class='button.classObject' 
@@ -103,9 +104,9 @@
   <script src="scripts/vue.min.js"></script>
   <script src="trigger/trigger.js"></script>
   <script>
-  Vue.config.debug = false;
-  Vue.config.devtools = false;
-  Vue.config.productionTip = false;
+  Vue.config.debug = true;
+  Vue.config.devtools = true;
+  Vue.config.productionTip = true;
   </script>  
   <script src="vue_components/summator.js"></script>
   <script src='vue_components/permutator.js'></script>

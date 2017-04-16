@@ -61,6 +61,16 @@ Vue.component('permutator', {
     },
     text: function() {
       return this.permutations.map((el) => el.join('')).join('  ');
+    },
+    possiblePermutationsAmount() {
+      return this.inputs
+        .map((input) => input.value.length)
+        .reduce(function(previousValue, currentValue) {
+          return previousValue * currentValue;
+        }, 1);
+    },
+    cantAddMore() {
+      return this.possiblePermutationsAmount >= 1024;
     }
   },
   created: function() {
