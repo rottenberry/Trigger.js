@@ -89,6 +89,9 @@ const Notification = new Vue({
     show(text, type) {
       this.$refs.main.add(this.makeNotification(text, type));
     },
+    showError(text) {
+      this.show(text, 'danger');
+    },
     makeNotification(text, type = "") {
       const makeBulmaClassObject = (type) => {
         const classObject =  {
