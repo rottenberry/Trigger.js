@@ -1,3 +1,43 @@
+const Notification = new Vue({
+  el: '#notificationsHolderTopRight',
+  data: {
+    env: {
+      template: notificatorTemplate.innerHTML,
+    }
+  },
+  methods: {
+    show(text, type) {
+      this.$refs.main.add(this.makeNotification(text, type));
+    },
+    showError(text) {
+      this.show(text, 'danger');
+    },
+    makeNotification(text, type = "") {
+      const makeBulmaClassObject = (type) => {
+        const classObject =  {
+          'notification': true,
+          'is-danger': false,
+          'is-warning': false,
+          'is-info': false,
+          'is-success': false,
+          'is-primary': false,
+        };
+
+        const field = `is-${type}`;
+        if (type !== "" && classObject.hasOwnProperty(field)) {
+          classObject[field] = true;
+        }
+        return classObject;
+      };
+      return {
+        text: text,
+        classObject: makeBulmaClassObject(type),
+        active: true,
+      };
+    },
+  },
+});
+
 const triggers = [
   Trigger.create(),
   Trigger.create(),
@@ -12,6 +52,10 @@ const summator = new Vue({
     env: {
       params: {
         MAX_SIZE: 16,
+      },
+      Notification: Notification,
+      errorMessages: {
+        'summator-full': 'The summator is full. You cannot add more triggers.',
       },
       template: summatorTemplate.innerHTML,
       triggers: triggers,
@@ -76,44 +120,4 @@ const permutator = new Vue({
       template: permutatorTemplate.innerHTML,
     }
   }
-});
-
-const Notification = new Vue({
-  el: '#notificationsHolderTopRight',
-  data: {
-    env: {
-      template: notificatorTemplate.innerHTML,
-    }
-  },
-  methods: {
-    show(text, type) {
-      this.$refs.main.add(this.makeNotification(text, type));
-    },
-    showError(text) {
-      this.show(text, 'danger');
-    },
-    makeNotification(text, type = "") {
-      const makeBulmaClassObject = (type) => {
-        const classObject =  {
-          'notification': true,
-          'is-danger': false,
-          'is-warning': false,
-          'is-info': false,
-          'is-success': false,
-          'is-primary': false,
-        };
-
-        const field = `is-${type}`;
-        if (type !== "" && classObject.hasOwnProperty(field)) {
-          classObject[field] = true;
-        }
-        return classObject;
-      };
-      return {
-        text: text,
-        classObject: makeBulmaClassObject(type),
-        active: true,
-      };
-    },
-  },
 });

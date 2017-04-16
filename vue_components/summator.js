@@ -24,6 +24,9 @@ Vue.component("summator", {
       } else {
         this.env.addLeftButton.setDisabledTitle();
         this.env.addRightButton.setDisabledTitle();
+        this.env.Notification.showError(
+          this.env.errorMessages['summator-full']
+        );
       }
     }
   },
