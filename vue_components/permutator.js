@@ -1,5 +1,3 @@
-(function() {
-
 Vue.component('permutator', {
   props: ['env'],
   data: function() {
@@ -73,14 +71,4 @@ Vue.component('permutator', {
     this.currentAction = null;
   },
 });
-
-const permutator = new Vue({
-  el: '#permutator',
-  data: {
-    env: {
-      template: permutatorTemplate.innerHTML,
-    }
-  }
-});
   
-})();
