@@ -53,15 +53,21 @@ p.sumvalue span {
 p .input.permut {
   margin-bottom: 5px !important;
 }
-.notification.top {
-    position: fixed;
-    margin: 5px;
-    z-index: 1000;
-    top: 0px;
+.notification-corner.top {
+  position: fixed;
+  margin: 5px;
+  z-index: 1000;
+  top: 0px;
 }
-.notification.top.right {
+.notification-corner.top.right {
   right: 0px;
 }
-.notifcation.top.left {
+.notification-corner.top.left {
   left: 0px;
+}
+.fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
 }

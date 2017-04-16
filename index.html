@@ -9,6 +9,16 @@
 </head>
 <body class='container'>
   <div id="vueTemplates" style="display: none;">
+    <div id='notificatorTemplate'>
+      <div>
+        <transition name='fade' v-for="item in notifications">
+          <div
+            v-bind:class='item.classObject'
+            v-if='item.active'
+            >{{item.text}}</div>
+        </transition>
+      </div>
+    </div>
     <div id="permutatorTemplate">
       <div>
         <h2 class='title is-5'>Permutator</h2>
@@ -87,7 +97,9 @@
       </div>
     </div>
   </div>
-
+  <div class='notification-corner top right' id='notificationsHolderTopRight'>
+    <notificator v-bind:env='env' ref='main'></notificator>
+  </div>
   <script src="scripts/vue.min.js"></script>
   <script src="trigger/trigger.js"></script>
   <script>
@@ -97,85 +109,7 @@
   </script>  
   <script src="vue_components/summator.js"></script>
   <script src='vue_components/permutator.js'></script>
-  <script>
-    const triggers = [
-      Trigger.create(),
-      Trigger.create(),
-      Trigger.create(),
-      Trigger.create()
-    ];
-    triggers.forEach((el) => el.id = Math.random());
-
-    const summator = new Vue({
-      el: '#summator_component',
-      data: {
-        env: {
-          params: {
-            MAX_SIZE: 16,
-          },
-          template: summatorTemplate.innerHTML,
-          triggers: triggers,
-          sumButton: {
-            classObject: {
-              "is-warning": false,
-              "is-success": true,
-              "is-danger": false,
-              "summator-control": true,
-              "button": true,
-            },
-            title: "start",
-            setStop: function () {
-              this.setClass('is-warning');
-              this.title = "stop";
-            },
-            setStart: function() {
-              this.setClass('is-success');
-              this.title = "resume";
-            },
-            showError: function() {
-              this.classObject('is-danger');
-              this.title = "NO TRIGGERS";
-              setTimeout(() => {
-                this.setClass('is-success');
-                this.title = oldTitle;
-              }, 1200);
-            },
-            setClass: function(className) {
-              this.classObject['is-danger'] = false;
-              this.classObject['is-success'] = false;
-              this.classObject['is-warning'] = false;
-              this.classObject[className] = true;
-            },
-          },
-          addLeftButton: {
-            title: 'add left',
-            setDisabledTitle: function() {
-              this.title = 'full';
-            },
-            setEnabledTitle: function() {
-              this.title = 'add left';
-            }
-          },
-          addRightButton: {
-            title: "add right",
-            setDisabledTitle: function() {
-              this.title = 'full';
-            },
-            setEnabledTitle: function() {
-              this.title = 'add right';
-            }
-          }
-        }
-      }
-    });
-    const permutator = new Vue({
-      el: '#permutator',
-      data: {
-        env: {
-          template: permutatorTemplate.innerHTML,
-        }
-      }
-    });
-  </script>
+  <script src='vue_components/notificator.js'></script>
+  <script src='main.js'></script>
 </body>
 </html>
