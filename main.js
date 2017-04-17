@@ -89,7 +89,8 @@ const summator = new Vue({
         },
         showError: function() {
           this.setClass('is-danger');
-          this.title = "NO TRIGGERS";
+          const oldTitle = this.title;
+          this.title = "no triggers";
           setTimeout(() => {
             this.setClass('is-success');
             this.title = oldTitle;
