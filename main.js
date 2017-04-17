@@ -1,3 +1,14 @@
+const Debouncer = {
+  create: (callback, lat) => {
+    let timer = null;
+    return function(param) {
+      clearTimeout(timer);
+      const bindedCallback = callback.bind(this);
+      timer = setTimeout(() => bindedCallback(param), lat);
+    };
+  },
+};
+
 const Notification = new Vue({
   el: '#notificationsHolderTopRight',
   data: {
@@ -119,5 +130,39 @@ const permutator = new Vue({
     env: {
       template: permutatorTemplate.innerHTML,
     }
+  }
+});
+
+const square = new Vue({
+  el: '#sqr',
+  data: {
+    square: 2,
+    power: 4,
+    constants: {
+      MAX_SQUARE: 65536,
+    },
+  },
+  methods: {
+    xx(number) {
+      return Math.pow(number, 2);
+    },
+    roundSquare(number) {
+      return Math.trunc(Math.sqrt(number));
+    },
+  },
+  watch: {
+    square: Debouncer.create(function(newValue) {
+      let newSquare;
+      if (newValue <= this.constants.MAX_SQUARE) newSquare = newValue;
+      else newSquare = this.constants.MAX_SQUARE;
+      this.power = Math.pow(newSquare, 2);
+      this.square = newSquare;
+    }, 100),
+    power: Debouncer.create(function(newValue) {
+      if (this.xx(this.square) !== this.power) {
+        this.power = this.xx(this.square);
+      }
+      this.square = this.roundSquare(newValue);
+    }, 700),
   }
 });

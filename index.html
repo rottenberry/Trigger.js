@@ -86,15 +86,34 @@
       <button v-bind:class='{active: active}' disabled></button>
     </div>
   </div>
-  <div class="columns">
-    <div class="column has-text-centered">
+  <div class="columns is-multiline">
+    <div class="column has-text-centered is-half">
       <div id="summator_component" >
         <summator v-bind:env="env"></summator>
       </div>
     </div>
-    <div class='column has-text-centered'>
+    <div class='column has-text-centered is-half'>
       <div class='box' style='height: 100%;' id='permutator'>
         <permutator v-bind:env="env"></permutator>
+      </div>
+    </div>
+    <div class="column has-text-centered is-half" id='sqr'>
+      <div class='box'>
+        <h2 class='title is-5'>The smartest calculator</h2>
+        <div class='tile is-ancestor'>
+          <div class="tile is-parent">
+            <div class="tile is-child">
+              <p>x</p>
+              <input type='text' class='input' v-model.number='square'>
+            </div>
+          </div>
+          <div class="tile is-parent">
+            <div class="tile is-child">
+              <p>x*x</p>
+              <input type='text' class='input' v-model.number='power'>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -104,9 +123,9 @@
   <script src="scripts/vue.min.js"></script>
   <script src="trigger/trigger.js"></script>
   <script>
-  Vue.config.debug = true;
-  Vue.config.devtools = true;
-  Vue.config.productionTip = true;
+  Vue.config.debug = false;
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
   </script>  
   <script src="vue_components/summator.js"></script>
   <script src='vue_components/permutator.js'></script>
