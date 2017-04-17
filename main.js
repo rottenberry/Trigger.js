@@ -1,10 +1,10 @@
 const Debouncer = {
-  create: (callback, lat) => {
+  create: (callback, delayTime) => {
     let timer = null;
     return function(param) {
       clearTimeout(timer);
       const bindedCallback = callback.bind(this);
-      timer = setTimeout(() => bindedCallback(param), lat);
+      timer = setTimeout(() => bindedCallback(param), delayTime);
     };
   },
 };
@@ -88,7 +88,7 @@ const summator = new Vue({
           this.title = "resume";
         },
         showError: function() {
-          this.classObject('is-danger');
+          this.setClass('is-danger');
           this.title = "NO TRIGGERS";
           setTimeout(() => {
             this.setClass('is-success');
