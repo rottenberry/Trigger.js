@@ -34,7 +34,7 @@
         <p
           v-for="input in inputs"
           ><input type='text' class='input permut' v-model="input.value"></p>
-        <textarea class='textarea'>{{ text }}</textarea>
+        <textarea class='textarea' v-model='text'>{{ text }}</textarea>
       </div>
     </div>
     <div id='summatorTemplate'>
