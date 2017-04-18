@@ -156,7 +156,7 @@ const square = new Vue({
       let newSquare;
       if (newValue <= this.constants.MAX_SQUARE) newSquare = newValue;
       else newSquare = this.constants.MAX_SQUARE;
-      this.power = Math.pow(newSquare, 2);
+      this.power = this.xx(newSquare);
       this.square = newSquare;
     }, 100),
     power: Debouncer.create(function(newValue) {
