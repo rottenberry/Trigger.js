@@ -104,13 +104,13 @@
           <div class="tile is-parent">
             <div class="tile is-child">
               <p>x (only integer values)</p>
-              <input type='number' class='input' v-model.number='square'>
+              <input type='number' class='input' v-model.number='square' v-bind:disabled="xDisabled">
             </div>
           </div>
           <div class="tile is-parent">
             <div class="tile is-child">
               <p>x*x (only integer values)</p>
-              <input type='number' class='input' v-model.number='power'>
+              <input type='number' class='input' v-model.number='power' v-bind:disabled='xxDisabled'>
             </div>
           </div>
         </div>

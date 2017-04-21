@@ -1,11 +1,30 @@
 const Debouncer = {
-  create: (callback, delayTime) => {
+  create: ({onStart, onShedule, onEnd, delayTime}) => {
     let timer = null;
     return function(param) {
       clearTimeout(timer);
-      const bindedCallback = callback.bind(this);
-      timer = setTimeout(() => bindedCallback(param), delayTime);
+      const bindedOnStart = onStart.bind(this);
+      const bindedOnShedule = onShedule.bind(this);
+      const bindedOnEnd = onEnd.bind(this);
+
+      bindedOnStart();
+      timer = setTimeout(() => {
+        bindedOnShedule(param);
+        bindedOnEnd();
+      }, delayTime);
     };
+  },
+};
+
+const OneStepDebouncer = {
+  create: (callback, delayTime) => {
+    const emptyFunction = () => null;
+    return Debouncer.create({
+      onStart: emptyFunction,
+      onShedule: callback,
+      onEnd: emptyFunction,
+      delayTime: delayTime,
+    });
   },
 };
 
@@ -137,6 +156,8 @@ const permutator = new Vue({
 const square = new Vue({
   el: '#sqr',
   data: {
+    xDisabled: false,
+    xxDisabled: false,
     square: 2,
     power: 4,
     constants: {
@@ -152,18 +173,32 @@ const square = new Vue({
     },
   },
   watch: {
-    square: Debouncer.create(function(newValue) {
-      let newSquare;
-      if (newValue <= this.constants.MAX_SQUARE) newSquare = newValue;
-      else newSquare = this.constants.MAX_SQUARE;
-      this.power = this.xx(newSquare);
-      this.square = newSquare;
-    }, 100),
-    power: Debouncer.create(function(newValue) {
-      if (this.xx(this.square) !== this.power) {
-        this.power = this.xx(this.square);
-      }
-      this.square = this.roundSquare(newValue);
-    }, 700),
+    square: Debouncer.create({
+      onStart: function() {this.xxDisabled = true;},
+      onShedule: function(newValue) {
+        let newSquare;
+        if (newValue <= this.constants.MAX_SQUARE) newSquare = newValue;
+        else newSquare = this.constants.MAX_SQUARE;
+        this.power = this.xx(newSquare);
+        this.square = newSquare;
+      },
+      onEnd: function() {this.xxDisabled = false;},
+      delayTime: 500,
+    }),
+    power: Debouncer.create({
+      onStart() {this.xDisabled = true;},
+      onShedule(newValue) {
+        this.xxDisabled = true;
+        if (this.xx(this.square) !== this.power) {
+          this.power = this.xx(this.square);
+        }
+        this.square = this.roundSquare(newValue);
+      },
+      onEnd() {
+        this.xxDisabled = false;
+        this.xDisabled = false;
+      },
+      delayTime: 500,
+    }),
   }
 });
