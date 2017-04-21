@@ -1,11 +1,18 @@
 const Debouncer = {
   create: ({onStart, onShedule, onEnd, delayTime}) => {
     let timer = null;
+    let bindedOnStart = null;
+    let bindedOnShedule = null;
+    let bindedOnEnd = null;
+    let firstRun = true;
     return function(param) {
       clearTimeout(timer);
-      const bindedOnStart = onStart.bind(this);
-      const bindedOnShedule = onShedule.bind(this);
-      const bindedOnEnd = onEnd.bind(this);
+      if (firstRun) {
+        firstRun = false;
+        bindedOnStart = onStart.bind(this);
+        bindedOnShedule = onShedule.bind(this);
+        bindedOnEnd = onEnd.bind(this);
+      }
 
       bindedOnStart();
       timer = setTimeout(() => {
@@ -183,7 +190,7 @@ const square = new Vue({
         this.square = newSquare;
       },
       onEnd: function() {this.xxDisabled = false;},
-      delayTime: 500,
+      delayTime: 1000,
     }),
     power: Debouncer.create({
       onStart() {this.xDisabled = true;},
@@ -198,7 +205,7 @@ const square = new Vue({
         this.xxDisabled = false;
         this.xDisabled = false;
       },
-      delayTime: 500,
+      delayTime: 1000,
     }),
   }
 });
