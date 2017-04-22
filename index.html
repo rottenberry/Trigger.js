@@ -92,6 +92,37 @@
         <summator v-bind:env="env"></summator>
       </div>
     </div>
+    <div class="column has-text-centered is-half" id="clock">
+      <div class='box'>
+        <h2 class='title is-5'>Binary clock</h2>
+        <p class='notification is-info'>{{hours}}:{{minutes}}:{{seconds}}</p>
+        <hr />
+        <p class='notification time'>
+          <trigger
+            v-for="item in hourClock.getTriggers()"
+            :key="item.id"
+            :trigger="item"
+            class="trigger"
+            ></trigger>
+        </p>
+        <p class='notification time'>
+          <trigger
+            v-for="item in minuteClock.getTriggers()"
+            :key="item.id"
+            :trigger="item"
+            class="trigger"
+            ></trigger>
+        </p>
+        <p class='notification time'>
+          <trigger
+            v-for="item in secondClock.getTriggers()"
+            :key="item.id"
+            :trigger="item"
+            class="trigger"
+            ></trigger>
+        </p>
+      </div>
+    </div>    
     <div class='column has-text-centered is-half'>
       <div class='box' style='height: 100%;' id='permutator'>
         <permutator v-bind:env="env"></permutator>
@@ -131,6 +162,7 @@
   <script src="vue_components/summator.js"></script>
   <script src='vue_components/permutator.js'></script>
   <script src='vue_components/notificator.js'></script>
+  <script src='trigger/binaryclock.js'></script>
   <script src='main.js'></script>
 </body>
 </html>
