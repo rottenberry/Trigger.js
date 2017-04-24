@@ -61,12 +61,17 @@ const getCurrentTime = () => {
     hours: timeStorage.getHours(),
     minutes: timeStorage.getMinutes(),
     seconds: timeStorage.getSeconds(),
+    milliseconds: timeStorage.getMilliseconds(),
   };
 };
 
 const initialTime = getCurrentTime();
 
 const binaryClock = {
+  millisecondClock: RestrictedSummator.create({
+    maxValue: 10,
+    startValue: Math.round(initialTime.milliseconds/100),
+  }),
   secondClock: RestrictedSummator.create({
     maxValue: 60,
     startValue: initialTime.seconds,
@@ -88,6 +93,9 @@ const BinaryClock = new Vue({
     return binaryClock;
   },
   computed: {
+    milliseconds() {
+      return binDigitsListToDec(this.millisecondClock.state);
+    },
     seconds() {
       return binDigitsListToDec(this.secondClock.state);
     },
@@ -100,6 +108,7 @@ const BinaryClock = new Vue({
   },
   created() {
     const makeID = (trigger) => trigger.id = Math.random();
+    this.millisecondClock.getTriggers().forEach(makeID);
     this.secondClock.getTriggers().forEach(makeID);
     this.minuteClock.getTriggers().forEach(makeID);
     this.hourClock.getTriggers().forEach(makeID);
@@ -115,8 +124,15 @@ const BinaryClock = new Vue({
         this.minuteClock.add(minuteClockFired);
       }      
     };
+    const millisecondsClockFired = {
+      onFired: () => {
+        this.secondClock.add(secondClockFired);
+      }
+    };
     this.timer = setInterval(() => {
-      this.secondClock.add(secondClockFired);
-    }, 1000);
+      for (let i = 0; i < 1; i++) {
+        this.millisecondClock.add(millisecondsClockFired);
+      }
+    }, 100);
   }
 });
