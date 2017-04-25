@@ -64,7 +64,6 @@ const summator = new Vue({
           "is-warning": false,
           "is-success": true,
           "is-danger": false,
-          "summator-control": true,
           "button": true,
         },
         title: "start",

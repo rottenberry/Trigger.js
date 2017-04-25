@@ -16,22 +16,6 @@ body {
 .trigger.active {
   background-color: #f44336;
 }
-.summator-control {
-  margin-bottom: 5px;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
-  font-size: 2em;
-  max-height: 40px;
-  border-radius: 10px;
-}
-.tile.is-vertical.add>.tile.is-child:not(:last-child) {
-  margin-bottom: 0px !important;
-}
-.control-panel {
-  margin-top: 40px !important;
-}
 .input.permut {
   max-width: 300px;
 }
@@ -61,5 +45,5 @@ p.notification.time {
   padding: 3px;
 }
 .longbox {
-  min-height: 420px;
+  min-height: 350px;
 }

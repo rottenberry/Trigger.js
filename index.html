@@ -48,36 +48,44 @@
           class="trigger"
           ></trigger>
         <hr />
-        <div class="tile is-ancestor control-panel">
-          <div class='tile is-parent'>
-            <div class="tile is-child">
-              <button 
-                v-on:click="startStopSum"
-                v-bind:class='env.sumButton.classObject'
-                >{{env.sumButton.title}}</button>
-            </div>
-            <div class="tile is-child">
-              <button 
-                class='summator-control button is-danger'
-                v-on:click="reset"
-                >reset</button>
-            </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button
+              class="button is-primary"
+              v-bind:disabled="cantSpeedUp"
+              v-on:click="speedUp"
+              >
+              speed up
+            </button>
+            <button
+              class="button is-primary"
+              v-bind:disabled='cantSlowDown'
+              v-on:click='slowDown'
+              >
+              slow down
+            </button>
           </div>
-          <div class='tile is-parent is-vertical add'>
-            <div class="tile is-child">
-              <button 
-                class='summator-control button is-primary'
-                v-on:click="makeTriggerLeft"
-                v-bind:disabled="cantAddMore"
-                >{{env.addLeftButton.title}}</button>
-            </div>            
-            <div class="tile is-child">
-              <button 
-                class='summator-control button is-primary'
-                v-on:click="makeTriggerRight"
-                v-bind:disabled="cantAddMore"
-                >{{env.addRightButton.title}}</button>
-            </div>
+          <div class="control">
+            <button
+              v-on:click="startStopSum"
+              v-bind:class='env.sumButton.classObject'
+              >{{env.sumButton.title}}</button>
+            <button
+              class='button is-danger'
+              v-on:click="reset"
+              >reset</button>
+          </div>
+          <div class="control">
+            <button
+              class='button is-primary'
+              v-on:click="makeTriggerLeft"
+              v-bind:disabled="cantAddMore"
+              >{{env.addLeftButton.title}}</button>
+            <button
+              class='button is-primary'
+              v-on:click="makeTriggerRight"
+              v-bind:disabled="cantAddMore"
+              >{{env.addRightButton.title}}</button>
           </div>
         </div>
       </div>
