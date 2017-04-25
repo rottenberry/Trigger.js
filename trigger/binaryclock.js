@@ -69,8 +69,8 @@ const initialTime = getCurrentTime();
 
 const binaryClock = {
   millisecondClock: RestrictedSummator.create({
-    maxValue: 10,
-    startValue: Math.round(initialTime.milliseconds/100),
+    maxValue: 250,
+    startValue: Math.round(initialTime.milliseconds/4),
   }),
   secondClock: RestrictedSummator.create({
     maxValue: 60,
@@ -129,10 +129,16 @@ const BinaryClock = new Vue({
         this.secondClock.add(secondClockFired);
       }
     };
-    this.timer = setInterval(() => {
-      for (let i = 0; i < 1; i++) {
-        this.millisecondClock.add(millisecondsClockFired);
-      }
-    }, 100);
+    let lastRunMSeconds = Date.now();
+    const runFrameLoop = () => {
+        let currentRunMSecends = Date.now();
+        let lag = Math.round((currentRunMSecends - lastRunMSeconds) / 4);
+        for (let i = 0; i < lag; i++) {
+          this.millisecondClock.add(millisecondsClockFired);
+        }
+        lastRunMSeconds = currentRunMSecends;
+        requestAnimationFrame(runFrameLoop);
+    };
+    requestAnimationFrame(runFrameLoop);
   }
 });
