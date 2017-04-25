@@ -70,7 +70,7 @@ const initialTime = getCurrentTime();
 const binaryClock = {
   millisecondClock: RestrictedSummator.create({
     maxValue: 1000,
-    startValue: Math.round(initialTime.milliseconds),
+    startValue: initialTime.milliseconds,
   }),
   secondClock: RestrictedSummator.create({
     maxValue: 60,
@@ -144,7 +144,7 @@ const BinaryClock = new Vue({
     let lastRunMSeconds = Date.now();
     const runFrameLoop = () => {
       let currentRunMSecends = Date.now();
-      let lag = Math.round((currentRunMSecends - lastRunMSeconds));
+      let lag = currentRunMSecends - lastRunMSeconds;
       for (let i = 0; i < lag; i++) {
         this.millisecondClock.add(millisecondsClockFired);
       }
