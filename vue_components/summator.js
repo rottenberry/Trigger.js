@@ -40,9 +40,23 @@ Vue.component("summator", {
     }
   },
   created: function() {
-    this.autoSumTimer = null;
+    this.frame = {};
+    this.frame.run = true;
+    this.frame.perAdd = 30;
+    this.frame.lastAddCount = 0;
     this.currentAutoSumAction = null;
     this.$options.template = this.env.template;
+    const summatorLoop = function() {
+      if (!this.frame.run) return;
+
+      if (this.frame.lastAddCount++ >= this.frame.perAdd) {
+        this.frame.lastAddCount = 0;
+
+        this.add();
+      }
+      requestAnimationFrame(this.summatorLoop);
+    };
+    this.summatorLoop = summatorLoop.bind(this);
   },
   methods: {
     createTriggerWithKey: function() {
@@ -57,14 +71,15 @@ Vue.component("summator", {
       this.triggers.push(this.createTriggerWithKey());
     },
     startAutoSum: function() {
-      this.autoSumTimer = setInterval(() => this.add(), 500);
       this.env.sumButton.setStop();
+      this.frame.run = true;
+      requestAnimationFrame(this.summatorLoop);
     },
     stopAutoSum: function() {
       this.env.sumButton.setStart();
     },
     startStopSum: function() {
-      clearInterval(this.autoSumTimer);
+      this.frame.run = false;
       if (this.state.length <= 0) {
         this.env.sumButton.showError();
         return;
