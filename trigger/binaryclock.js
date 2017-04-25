@@ -143,13 +143,13 @@ const BinaryClock = new Vue({
     };
     let lastRunMSeconds = Date.now();
     const runFrameLoop = () => {
-        let currentRunMSecends = Date.now();
-        let lag = Math.round((currentRunMSecends - lastRunMSeconds));
-        for (let i = 0; i < lag; i++) {
-          this.millisecondClock.add(millisecondsClockFired);
-        }
-        lastRunMSeconds = currentRunMSecends;
-        requestAnimationFrame(runFrameLoop);
+      let currentRunMSecends = Date.now();
+      let lag = Math.round((currentRunMSecends - lastRunMSeconds));
+      for (let i = 0; i < lag; i++) {
+        this.millisecondClock.add(millisecondsClockFired);
+      }
+      lastRunMSeconds = currentRunMSecends;
+      requestAnimationFrame(runFrameLoop);
     };
     requestAnimationFrame(runFrameLoop);
   }
