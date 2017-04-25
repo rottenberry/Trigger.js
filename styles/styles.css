@@ -1,5 +1,5 @@
 html {
-background-color: cadetblue;
+  background-color: cadetblue;
 }
 body {
   padding-top: 10px;
@@ -15,21 +15,6 @@ body {
 }
 .trigger.active {
   background-color: #f44336;
-}
-p.sumvalue {
-  margin-bottom: 40px;
-  margin-top: 50px;
-}
-p.sumvalue span {
-  background-color: #68ef68;
-  border: none;
-  border-radius: 50px;
-  font-size: 1.5em;
-  line-height: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 1px;
-  padding-bottom: 3px;
 }
 .summator-control {
   margin-bottom: 5px;
@@ -68,10 +53,13 @@ p .input.permut {
 .fade-leave-active {
   transition: opacity .5s
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 p.notification.time {
   margin: 2px;
   padding: 3px;
+}
+.longbox {
+  min-height: 420px;
 }
