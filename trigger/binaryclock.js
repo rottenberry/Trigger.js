@@ -92,6 +92,12 @@ const BinaryClock = new Vue({
     return binaryClock;
   },
   methods: {
+    resetAll() {
+      this.millisecondClock.reset();
+      this.secondClock.reset();
+      this.minuteClock.reset();
+      this.hourClock.reset();
+    },
     leadToOneZero(number) {
       if (number < 10) return "0" + number;
       return number;
@@ -143,10 +149,27 @@ const BinaryClock = new Vue({
     };
     let lastRunMSeconds = Date.now();
     const runFrameLoop = () => {
-      let currentRunMSecends = Date.now();
+      const currentRunMSecends = Date.now();
       let lag = currentRunMSecends - lastRunMSeconds;
-      for (let i = 0; i < lag; i++) {
-        this.millisecondClock.add(millisecondsClockFired);
+      if (lag <= 1000) {
+        for (let i = 0; i < lag; i++) {
+          this.millisecondClock.add(millisecondsClockFired);
+        }
+      } else {
+        this.resetAll();
+        const newTime = getCurrentTime();
+        for (let i = 0; i < newTime.hours; i++) {
+          this.hourClock.add();
+        }
+        for (let i = 0; i < newTime.minutes; i++) {
+          this.minuteClock.add();
+        }
+        for (let i = 0; i < newTime.seconds; i++) {
+          this.secondClock.add();
+        }
+        for (let i = 0; i < newTime.milliseconds; i++) {
+          this.millisecondClock.add(millisecondsClockFired);
+        }
       }
       lastRunMSeconds = currentRunMSecends;
       requestAnimationFrame(runFrameLoop);
