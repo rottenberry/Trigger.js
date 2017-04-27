@@ -13,11 +13,16 @@ Vue.component("summator", {
     summator.triggers = summator.getTriggers();
     summator.frame = {};
     summator.frame.run = true;
-    summator.frame.rate = 30;
-    summator.frame.fastestPerAdd = 3;
-    summator.frame.slowestPerAdd = 60;
-    summator.frame.lastAddCount = 0;
-    summator.frame.step = 10;
+    summator.frame.timeout = 500;
+    summator.frame.timeoutPointer = 4;
+    summator.frame.timeouts = [
+      50,
+      100,
+      250,
+      500,
+      1000,
+      2000,
+    ];
     return summator;
   },
   watch: {
@@ -38,11 +43,11 @@ Vue.component("summator", {
     }
   },
   computed: {
-    cantSlowDown() {
-      return this.frame.rate >= this.frame.slowestPerAdd;
+    cantSpeedUp: function() {
+      return (this.frame.timeoutPointer - 1) < 0;
     },
-    cantSpeedUp() {
-      return this.frame.rate <= this.frame.fastestPerAdd;
+    cantSlowDown: function() {
+      return (this.frame.timeoutPointer) >= (this.frame.timeouts.length - 1);
     },
     sumValue: function() {
       if (this.state.length <= 0) return 0;
@@ -55,34 +60,31 @@ Vue.component("summator", {
   created: function() {
     this.currentAutoSumAction = null;
     this.$options.template = this.env.template;
+    this.lastAddTime = Date.now();
     const summatorLoop = function() {
       if (!this.frame.run) return;
 
-      if (this.frame.lastAddCount++ >= this.frame.rate) {
-        this.frame.lastAddCount = 0;
-
+      const currentTime = Date.now();
+      const delta = currentTime - this.lastAddTime;
+      if (delta >= this.frame.timeout) {
         this.add();
+        this.lastAddTime = currentTime;
       }
+
       requestAnimationFrame(this.summatorLoop);
     };
     this.summatorLoop = summatorLoop.bind(this);
   },
   methods: {
-    speedUp() {
-      const newFrameRate = this.frame.rate - this.frame.step;
-      if (newFrameRate <= this.frame.fastestPerAdd) {
-        this.frame.rate = this.frame.fastestPerAdd;
-      } else {
-        this.frame.rate = newFrameRate;
-      }
+    speedUp: function() {
+      if (this.cantSpeedUp) return;
+      this.frame.timeoutPointer = this.frame.timeoutPointer - 1;
+      this.frame.timeout = this.frame.timeouts[this.frame.timeoutPointer];
     },
-    slowDown() {
-      const newFrameRate = this.frame.rate + this.frame.step;
-      if (newFrameRate >=this.frame.slowestPerAdd) {
-        this.frame.rate = this.frame.slowestPerAdd;
-      } else {
-        this.frame.rate = newFrameRate;
-      }
+    slowDown: function() {
+      if (this.cantSlowDown) return;
+      this.frame.timeoutPointer = this.frame.timeoutPointer +1;
+      this.frame.timeout = this.frame.timeouts[this.frame.timeoutPointer];
     },
     createTriggerWithKey: function() {
       const newTrigger = Trigger.create();
