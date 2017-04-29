@@ -57,8 +57,9 @@ Vue.component("summator", {
     },
     'frame.timeout': function(newValue) {
       this.env.Notification.show(
-        this.env.infoMessages['summator-freq']
-          .replace('#times#', 1000 / this.frame.timeout),
+        this.env.infoMessages['summator-freq'].resolve({
+          'times': 1000 / this.frame.timeout
+        }),
         'warning'
       );
     },
