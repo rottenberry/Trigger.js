@@ -14,7 +14,7 @@ Vue.component("summator", {
     summator.frame = {};
     summator.frame.run = true;
     summator.frame.timeout = 500;
-    summator.frame.timeoutPointer = 4;
+    summator.frame.timeoutPointer = 3;
     summator.frame.timeouts = [
       50,
       100,
@@ -40,7 +40,28 @@ Vue.component("summator", {
           this.env.errorMessages['summator-full']
         );
       }
-    }
+    },
+    cantSpeedUp: function(newValue) {
+      if (newValue) {
+        this.env.Notification.showError(
+          this.env.errorMessages['too-fast']
+        );
+      }
+    },
+    cantSlowDown: function(newValue) {
+      if (newValue) {
+        this.env.Notification.showError(
+          this.env.errorMessages['too-slow']
+        );
+      }
+    },
+    'frame.timeout': function(newValue) {
+      this.env.Notification.show(
+        this.env.infoMessages['summator-freq']
+          .replace('#times#', 1000 / this.frame.timeout),
+        'warning'
+      );
+    },
   },
   computed: {
     cantSpeedUp: function() {

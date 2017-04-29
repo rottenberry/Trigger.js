@@ -56,6 +56,11 @@ const summator = new Vue({
       Notification: Notification,
       errorMessages: {
         'summator-full': 'The summator is full. You cannot add more triggers.',
+        'too-slow': 'The slowest speed reached. You cannot slow down more.',
+        'too-fast': 'The highest speed reached. You cannot speed up more.',
+      },
+      infoMessages:{
+        'summator-freq': 'The summator increases its value #times# times per second.',
       },
       template: summatorTemplate.innerHTML,
       triggers: triggers,
