@@ -1,0 +1,17 @@
+html {
+  background: #061161;
+}
+body {
+  padding: 10px;
+}
+section.section {
+  border-radius: 10px;
+}
+.foo {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+}
+.centered-tile {
+  text-align: center;
+}
