@@ -25,11 +25,21 @@ const XO = new Vue({
     rows.push(cells.slice(3,6));
     rows.push(cells.slice(6,9));
 
+    const gameMessages = {
+      'move': 'Your move',
+      'thinking': 'Your opponent is considering his next move...',
+      'won': 'You have won!',
+      'lost': 'You have lost',
+      'left': 'Your opponent has left the game',
+      'disconnect': 'You have been disconnected',
+    };
     return {
       rows: rows,
       cells: cells,
       gamerRole: 'X',
       opponentRole: 'O',
+      gameMessages: gameMessages,
+      gameMessage: gameMessages.move,
     };
   },
   methods: {
