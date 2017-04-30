@@ -9,27 +9,19 @@
   <title>Tic-tac-toe game. Play for free</title>
 </head>
 <body>
-  <section class='section'>
+  <section class='section' id='theGame'>
     <div class='container'>
       <div class='tile is-parent'>
         <div class='tile is-child is-1'></div>
         <div class='tile is-child is-10 has-text-centered'>
           <h3 class='title is-3'>Tic-tac-toe</h3>
           <hr />
-          <div>
-            <p class='button is-success foo'>1</p>
-            <p class='button is-success foo'>2</p>
-            <p class='button is-success foo'>3</p>  
-          </div>
-          <div>
-            <p class='button is-success foo'>4</p>
-            <p class='button is-success foo'>5</p>
-            <p class='button is-success foo'>6</p>  
-          </div>
-          <div>
-            <p class='button is-success foo'>7</p>
-            <p class='button is-success foo'>8</p>
-            <p class='button is-success foo'>9</p>  
+          <div v-for="(row, rowIndex) in rows">
+            <p
+              v-for='(cell, cellIndex) in row'
+              v-bind:class='cell.classObject'
+              v-on:click="processCellClick(rowIndex, cellIndex)"
+              >{{ cell.value }}</p>
           </div>
           <hr />
         </div>
@@ -37,6 +29,12 @@
       </div>
     </div>
   </section>
-  <script src="scripts/vue.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script>
+  Vue.config.debug = true;
+  Vue.config.devtools = true;
+  Vue.config.productionTip = false;
+  </script>  
+  <script src='scripts/xo.js'></script>
 </body>
 </html>
